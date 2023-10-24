@@ -1,0 +1,105 @@
+.slide-in,
+.slide-out {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+/***** slide-in-animation *****/
+
+.slide-in {
+  animation-timing-function: ease-out;
+}
+
+.slide-in.in-view__up {
+  animation-name: in-up;
+}
+
+@keyframes in-up {
+  from {
+    transform: translateY(100vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.slide-in.in-view__down {
+  animation-name: in-down;
+}
+
+@keyframes in-down {
+  from {
+    transform: translateY(-100vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/***** slide-out-animation *****/
+
+.slide-out {
+  animation-timing-function: linear;
+  pointer-events: none;
+}
+
+.slide-out.out-view__up {
+  animation-name: out-up;
+}
+
+@keyframes out-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  to {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-100vh);
+  }
+}
+
+.slide-out.out-view__down {
+  animation-name: out-down;
+}
+
+@keyframes out-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  to {
+    height: 0;
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+}
+
+/***** rendered-animation  *****/
+
+.rendered {
+  animation: visible 1.25s ease-out 1 forwards;
+}
+
+@keyframes visible {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
