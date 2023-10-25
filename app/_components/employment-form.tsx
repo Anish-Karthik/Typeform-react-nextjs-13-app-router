@@ -16,10 +16,10 @@ import { useForm } from "react-hook-form"
 import Select from "react-select"
 import * as z from "zod"
 
+import { jobRolesObj } from "@/lib/job-role"
 import { useHandleScroll } from "@/lib/useHandleScroll"
 import { multiStepHooksType } from "@/lib/useMultiStepForm"
-import { OnboardingType, callOnce, emptyCity, emptyState, selectClassNames } from "@/lib/utils"
-import { City, Country, ICity, ICountry, IState, State } from "country-state-city"
+import { OnboardingType, callOnce, selectClassNames } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { Question } from "./question"
 const inter = Inter({ subsets: ['latin'] })
@@ -29,38 +29,29 @@ export const metadata: Metadata = {
   description: 'Country, City and State form',
 }
 
-export default function CountryStateCityForm({
+export default function EmploymentForm({
   updateFields,
   getHooks,
   form,
   formSchema,
   data,
-  name,
-  value,
 }: {
-  name: 'country' | 'state' | 'city'
   getHooks: () => multiStepHooksType
   updateFields: (fields: Partial<OnboardingType>) => void
   form: ReturnType<typeof useForm<Partial<OnboardingType>>>
   formSchema: z.ZodObject<any, any, any>
   data: OnboardingType
-  value: 'ICountry' | 'IState' | 'ICity'
 }) {
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo, getFirstInvalidStep, setValidIndex, validCountArr, prev }  = getHooks()
   useHandleScroll(scrollDown, back)
   const now = currentStepIndex;
   const [isGoingBack, setIsGoingBack] = useState(false)
   const [prevValue, setPrevValue] = useState<number>(prev)
-  const [selectedCSCData, setSelectedCSCData] = useState<ICountry | IState | ICity | null>(data[value]);
-  const options = {
-    country: Country.getAllCountries(),
-    state: State.getStatesOfCountry(data.ICountry?.isoCode).length? State.getStatesOfCountry(data.ICountry?.isoCode) : [emptyState],
-    city: City.getCitiesOfState(data.IState?.countryCode || '', data.IState?.isoCode || '').length? City.getCitiesOfState(data.IState?.countryCode || '', data.IState?.isoCode || '') : [emptyCity]
-  }
+  const [selectedData, setSelectedData] = useState<{name: string} | null>({name: data.employmentStatus});
   const { isSubmitting, isValid } = form.formState
   useEffect(() => {
-    form.setValue(name, selectedCSCData?selectedCSCData.name:"")
-  }, [form, name, selectedCSCData])
+    form.setValue("employmentStatus", selectedData?.name || "")
+  }, [form, selectedData, setSelectedData])
 
   function scrollDown() {
     form.handleSubmit(onSubmit)()
@@ -75,8 +66,8 @@ export default function CountryStateCityForm({
   // handle next
   async function onSubmit(values: z.infer<typeof formSchema>) {
 
-    updateFields({...values, [value]: selectedCSCData})
-
+    updateFields({...values})
+    console.log("isLastStep", values)
     if(!isLastStep) {
       console.log("next step", getFirstInvalidStep())
       if(getFirstInvalidStep() !== steps.length && getFirstInvalidStep() !== currentStepIndex) goTo(getFirstInvalidStep())
@@ -115,28 +106,36 @@ export default function CountryStateCityForm({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name={name}
+              name="employmentStatus"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="capitalize form_heading">{name}</FormLabel>
+                  <FormLabel className="capitalize form_heading">{"Employment Status"}</FormLabel>
                   <FormControl>
-                    <Select
-                      unstyled
-                      classNames={selectClassNames}
-                      options={options[name]}
-                      getOptionLabel={(options) => {
-                        return options["name"]
-                      }}
-                      getOptionValue={(options) => {
-                        return options["name"]
-                      }}
-                      value={selectedCSCData}
-                      onChange={(item) => {
-                        setSelectedCSCData(item)
-                      }}
-                    />
+                    <div className="relative">
+                      {(!selectedData || selectedData.name === "") && <div className="absolute inset-0 top-2 left-2 ">
+                        Select your status
+                      </div>}
+                      <Select
+                        unstyled
+                        classNames={selectClassNames}
+                        className="bg-transparent"
+                        options={jobRolesObj}
+                        getOptionLabel={(options) => {
+                          return options["name"]
+                        }}
+                        getOptionValue={(options) => {
+                          return options["name"]
+                        }}
+                        placeholder="Select your EmploymentStatus"
+                        value={selectedData}
+                        defaultValue={{name:"Select your EmploymentStatus"}}
+                        onChange={(item) => {
+                          setSelectedData(item)
+                        }}
+                      />
+                    </div>
                   </FormControl>
-                  <FormDescription>Select your {name}.</FormDescription>
+                  <FormDescription>Select your EmploymentStatus.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

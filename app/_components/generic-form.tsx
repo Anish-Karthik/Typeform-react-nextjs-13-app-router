@@ -154,11 +154,14 @@ function FormBodyComponent({
           control={form.control}
           name={name}
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="capitalize">{name}</FormLabel>
+            <FormItem className="!text-4xl">
+              <FormLabel className="capitalize form_heading">{name}</FormLabel>
+              <FormDescription className="form_description">
+                This is your public display {name}.
+              </FormDescription>
               <FormControl>
                 {type !== 'select' ? (
-                  <Input type={type} placeholder={`Enter your ${name}`} {...field} />
+                  <Input className="no-focus form_input" type={type} placeholder={`Enter your ${name}`} {...field} />
                 ): (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
@@ -174,16 +177,16 @@ function FormBodyComponent({
                   </Select>
                 )}
               </FormControl>
-              <FormDescription>
-                This is your public display {name}.
-              </FormDescription>
-              <FormMessage />
+              
+              <FormMessage className="form_message" />
             </FormItem>
           )}
         />
-        {!isFirstStep && <Button onClick={back} type="button">Back</Button>}
-        {isLastStep && <Button type="submit">Submit</Button>}
-        {!isLastStep && <Button type="submit">Next</Button>}
+        <div className="flex justify-end gap-4">
+          {!isFirstStep && <Button onClick={back} type="button" className="form_button">Back</Button>}
+          {isLastStep && <Button type="submit" className="form_button">Submit</Button>}
+          {!isLastStep && <Button type="submit" className="form_button">Next</Button>}
+        </div>
       </form>
     </Form>
   )

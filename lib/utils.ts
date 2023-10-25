@@ -21,6 +21,10 @@ export type OnboardingType = {
   IState: IState | null;
   ICity: ICity | null;
 }
+export type ObjectType = {
+  [key: string]: string
+}
+
 
 export function callOnce(fn: () => void, delay: number) {
   let called = false;

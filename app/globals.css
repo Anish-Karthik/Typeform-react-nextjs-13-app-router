@@ -101,4 +101,62 @@
   .bg-demon {
     background-color: red;
   }
+  .question-input__text {
+    background-color: transparent;
+    border: none;
+    border-bottom: thin solid var(--placeholder-color);
+    color: var(--btn-text-color);
+    @apply text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl;
+    margin-top: 36px;
+    padding-bottom: 8px;
+    width: 100%;
+  }
+
+  .question-input__text:focus-visible {
+    border-bottom: 2px solid var(--btn-text-color);
+    outline: none;
+  }
+
+  .question-input__text::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--placeholder-color);
+    opacity: 1; /* Firefox */
+  }
+
+  .question-input__text::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--placeholder-color);
+  }
+
+  @media screen and (max-width: 599px) {
+    .question-input__text {
+      @apply text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl;
+      margin-top: 32px;
+    }
+  }
+
+}
+
+.no-focus {
+  @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 focus:outline-none !important;
+}
+
+.form_input {
+  @apply border-0 border-solid border-b-2 rounded-none border-b-gray-200 focus:border-b-slate-950 text-xl xs:text-2xl sm:text-3xl sm:py-2 md:text-4xl md:py-6 mt-6 px-0 !important;
+}
+
+.form_heading {
+  @apply text-2xl sm:text-3xl sm:py-2 md:text-4xl font-bold text-slate-950 !important;
+}
+
+.form_description {
+  @apply text-xl sm:text-2xl sm:py-2 md:text-3xl text-slate-950 !important;
+}
+
+.form_message {
+  @apply text-lg sm:text-xl !important;
+}
+
+.form_button {
+  @apply text-xl sm:text-2xl sm:py-2 md:text-3xl font-bold text-white bg-slate-950 hover:bg-slate-900 !important;
 }
