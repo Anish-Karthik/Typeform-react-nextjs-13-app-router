@@ -1,13 +1,14 @@
 "use client";
 
 import { Progress } from "@/components/ui/progress";
+import { formSchemaCity, formSchemaCountry, formSchemaDob, formSchemaEmail, formSchemaGender, formSchemaHowDidHear, formSchemaName, formSchemaPhoneNo, formSchemaState } from "@/lib/schema";
 import { multiStepHooksType, useMultistepForm } from "@/lib/useMultiStepForm";
 import { OnboardingType } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import CountryStateCityForm from "./country-state-city";
 import GenericForm from "./generic-form";
-import { formSchemaDob, formSchemaEmail, formSchemaGender, formSchemaName, formSchemaPhoneNo } from "@/lib/schema";
 
 
 const total = 9;
@@ -23,7 +24,51 @@ const TypeForm = ({
     })
   }
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo, getFirstInvalidStep, setValidIndex, validCountArr, prev } = useMultistepForm([
-
+    <CountryStateCityForm
+      key={-3}
+      getHooks={getHooks}
+      form={useForm<Partial<OnboardingType>>({
+        resolver: zodResolver(formSchemaCountry),
+        defaultValues: {
+          country: data.country,
+        },
+      })}
+      formSchema={formSchemaCountry}
+      data={data}
+      updateFields={updateFields}
+      name="country"
+      value="ICountry"
+    />,
+    <CountryStateCityForm
+      key={-2}
+      getHooks={getHooks}
+      form={useForm<Partial<OnboardingType>>({
+        resolver: zodResolver(formSchemaState),
+        defaultValues: {
+          state: data.state,
+        },
+      })}
+      formSchema={formSchemaState}
+      data={data}
+      updateFields={updateFields}
+      name="state"
+      value="IState"
+    />,
+    <CountryStateCityForm
+      key={-1}
+      getHooks={getHooks}
+      form={useForm<Partial<OnboardingType>>({
+        resolver: zodResolver(formSchemaCity),
+        defaultValues: {
+          city: data.city,
+        },
+      })}
+      formSchema={formSchemaCity}
+      data={data}
+      updateFields={updateFields}
+      name="city"
+      value="ICity"
+    />,
     <GenericForm 
       key={0} 
       getHooks={getHooks}
@@ -92,6 +137,21 @@ const TypeForm = ({
       formSchema={formSchemaGender}
       updateFields={updateFields}
       selectOptions={["male", "female", "prefer not to say"]}
+    />,
+    <GenericForm
+      key={5}
+      getHooks={getHooks}
+      form={useForm<Partial<OnboardingType>>({
+        resolver: zodResolver(formSchemaHowDidHear),
+        defaultValues: {
+          howDidHear: data.howDidHear,
+        },
+      })}
+      name="howDidHear"
+      type="select"
+      formSchema={formSchemaHowDidHear}
+      updateFields={updateFields}
+      selectOptions={["social media", "referred by a friend", "prefer not to say"]}
     />,
   ])
   function getHooks(): multiStepHooksType {

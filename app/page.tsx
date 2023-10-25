@@ -13,7 +13,10 @@ const initialData: OnboardingType = {
   state: '',
   city: '',
   employmentStatus: '',
-  howDidHear: ''
+  howDidHear: '',
+  ICountry: null,
+  IState: null,
+  ICity: null,
 }
 
 const page = () => {
